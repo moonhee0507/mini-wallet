@@ -8,7 +8,7 @@ type ErrorInfo = {
 export default class AuthenticateController {
   constructor(private core: Core) {}
 
-  sendVerificationCode({
+  public sendVerificationCode({
     email,
     purpose,
     withCaptcha,
