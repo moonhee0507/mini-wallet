@@ -38,18 +38,25 @@ export default function Page() {
       withCaptcha: ({ success, failure }) => {
         // captcha UI
         openModal("CAPTCHA", {
-          onSuccess: ({ captchaToken }) => {
+          onVerify: ({ captchaToken }) => {
             console.log('openModal에 전달된 props', captchaToken);
             closeModal();
             success({ captchaToken });
           },
-          onFailure: () => {
+          onExpire: () => {
             closeModal();
             failure({
-              code: "CAPTCHA_FAILED",
+              code: "CAPTCHA_EXPIRED",
               message: "Captcha verification failed",
             })
-          }
+          },
+          onError: (error: string) => {
+            closeModal();
+            failure({
+              code: "CAPTCHA_ERROR",
+              message: error,
+            })
+          },
         })
       },
       onSuccess: (resData: { expiresIn: number; cooldown: number }) => {

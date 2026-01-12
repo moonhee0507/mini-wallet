@@ -15,13 +15,15 @@ const HCaptcha = HCaptchaImport as unknown as ComponentClass<CaptchaProps>;
 const SITEKEY = "10000000-ffff-ffff-ffff-000000000001";
 
 type CaptchaModalProps = {
-  onSuccess: ({ captchaToken }: { captchaToken: string }) => void;
-  onFailure: () => void;
+  onVerify: ({ captchaToken }: { captchaToken: string }) => void;
+  onExpire: () => void;
+  onError: (error: string) => void;
 };
 
 export function CaptchaModal({
-  onSuccess,
-  onFailure,
+  onVerify,
+  onExpire,
+  onError,
 }: CaptchaModalProps) {
   const captchaRef = useRef(null);
   return (
@@ -32,14 +34,10 @@ export function CaptchaModal({
           sitekey={SITEKEY}
           onVerify={(token) => {
             console.log("🚀 onVerify token", token);
-            onSuccess({ captchaToken: token });
+            onVerify({ captchaToken: token });
           }}
-          onExpire={() => {
-            onFailure();
-          }}
-          onError={() => {
-            onFailure();
-          }}
+          onExpire={onExpire}
+          onError={onError}
         />
       </div>
     </dialog>
